@@ -3,7 +3,7 @@ from models.championship import Championship
 from models.user_championship import UserChampionship
 from schemas.championship import createChampionship
 
-from server.PassaBola.models import user_championship
+from models import user_championship
 
 
 def create_championship(db: Session, data: createChampionship):
