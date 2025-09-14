@@ -24,6 +24,10 @@ export const siteConfig = {
       label: "About",
       href: "/about",
     },
+    {
+      label: "Torneios",
+      href: "/tournaments",
+    },
   ],
   navMenuItems: [
     {
@@ -57,6 +61,10 @@ export const siteConfig = {
     {
       label: "Logout",
       href: "/logout",
+    },
+    {
+      label: "Torneios",
+      href: "/tournaments",
     },
   ],
   links: {
