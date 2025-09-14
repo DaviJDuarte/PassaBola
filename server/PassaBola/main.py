@@ -2,6 +2,7 @@ from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
 from core.config import settings
 
+from routers import championship, match
 app = FastAPI(
     title="Passa Bola",
     version="0.1.0",
