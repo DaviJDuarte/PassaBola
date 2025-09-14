@@ -9,7 +9,7 @@ class Settings(BaseSettings):
     ALLOWED_ORIGINS: str = ""
 
     @field_validator("ALLOWED_ORIGINS")
-    def allowed_origins_validator(self, value: str) -> List[str]:
+    def allowed_origins_validator(cls, value: str) -> List[str]:
         return value.split(",") if value else []
 
     class Config:
