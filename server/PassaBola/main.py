@@ -16,6 +16,8 @@ app.add_middleware(
     allow_methods=["*"],
     allow_headers=["*"],
 )
+app.include_router(championship.router)
+app.include_router(match.router)
 
 
 if __name__ == "__main__":
