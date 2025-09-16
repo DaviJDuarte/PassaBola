@@ -1,5 +1,5 @@
 ﻿from typing import List
-from pydantic_settings import BaseSettings
+from pydantic_settings import BaseSettings, SettingsConfigDict
 from pydantic import field_validator
 
 class Settings(BaseSettings):
@@ -9,13 +9,14 @@ class Settings(BaseSettings):
     ALLOWED_ORIGINS: str = ""
 
     @field_validator("ALLOWED_ORIGINS")
-    def allowed_origins_validator(self, value: str) -> List[str]:
+    def allowed_origins_validator(cls, value: str) -> List[str]:
         return value.split(",") if value else []
 
-    class Config:
-        env_file = ".env"
-        env_file_encoding = "utf-8"
-        case_sensitive = True
+    model_config = SettingsConfigDict(
+        env_file=".env",
+        env_file_encoding="utf-8-sig",
+        case_sensitive=True,
+    )
 
 
 settings = Settings()

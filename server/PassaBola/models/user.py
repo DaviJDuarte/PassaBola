@@ -7,10 +7,11 @@ from sqlalchemy.orm import relationship
 from db.database import Base
 
 class PositionEnum(enum.Enum):
-    goalkeeper = "goalkeeper"
-    defender = "defender"
-    midfielder = "midfielder"
-    forward = "forward"
+    goleira = "goleira"
+    zagueira = "zagueira"
+    lateral = "lateral"
+    meio_campo = "meio-campo"
+    atacante = "atacante"
 
 
 class User(Base):
