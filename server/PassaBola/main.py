@@ -19,6 +19,7 @@ async def lifespan(app: FastAPI):
     yield
     # Optional: add shutdown logic here (e.g., close engine/session)
 
+from routers import championship, match
 app = FastAPI(
     title="Passa Bola",
     version="0.1.0",
@@ -34,6 +35,8 @@ app.add_middleware(
     allow_methods=["*"],
     allow_headers=["*"],
 )
+app.include_router(championship.router)
+app.include_router(match.router)
 
 app.add_middleware(AuthMiddleware, protected_prefixes=["/api/secure"])
 
