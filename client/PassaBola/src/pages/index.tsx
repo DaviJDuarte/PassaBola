@@ -12,32 +12,33 @@ export default function Component() {
   const [isSignupOpen, setIsSignupOpen] = useState(false);
 
   return (
-    <div className="bg-background relative flex min-h-dvh w-full flex-col overflow-hidden">
+    <div className="relative flex min-h-dvh w-full flex-col overflow-hidden bg-background">
       <BasicNavbar />
 
       <main className="container mx-auto flex flex-1 flex-col items-center justify-center px-6 sm:px-8">
         <section className="z-20 flex max-w-3xl flex-col items-center text-center">
-          <span className="mb-4 inline-flex items-center gap-2 rounded-full border border-default-100 bg-default-50 px-3 py-1 text-xs text-default-500">
+          <span className="mb-4 inline-flex items-center gap-2 rounded-full border border-purple-200 bg-purple-50 px-3 py-1 text-xs text-purple-600">
             <Icon
-              className="text-default-500"
+              className="text-purple-600"
               icon="solar:bolt-linear"
               width={16}
             />
-            Olá
+            Passa a Bola
           </span>
 
           <h1 className="bg-hero-section-title bg-clip-text text-[clamp(36px,7vw,56px)] font-bold leading-[1.1] tracking-tight">
-            Participe dos campeonatos da Passa a Bola
+            Organize e participe dos campeonatos da Passa a Bola
           </h1>
 
-          <p className="mt-4 max-w-xl text-base leading-7 text-default-500 sm:text-[18px]">
-            A simple workspace to plan, collaborate, and manage work. Sign in to
-            continue or create a free account to get started in minutes.
+          <p className="mt-4 max-w-xl text-base leading-7 text-purple-700 sm:text-[18px]">
+            Crie ou entre em campeonatos, acompanhe seus próximos jogos, receba
+            data e local das partidas e veja os resultados em tempo real. Faça
+            login para continuar ou crie sua conta em poucos segundos.
           </p>
 
           <div className="mt-6 flex w-full flex-col items-center justify-center gap-3 sm:flex-row sm:gap-4">
             <Button
-              className="h-11 w-full sm:w-[170px] bg-default-foreground text-background font-medium"
+              className="h-11 w-full bg-purple-600 font-medium text-white hover:bg-purple-700 sm:w-[170px]"
               radius="full"
               onPress={() => setIsSignupOpen(true)}
             >
@@ -45,11 +46,11 @@ export default function Component() {
             </Button>
 
             <Button
-              className="h-11 w-full sm:w-[170px] border-default-100 font-medium"
+              className="h-11 w-full border border-purple-300 font-medium text-purple-700 sm:w-[170px]"
               endContent={
-                <span className="bg-default-100 pointer-events-none flex h-[22px] w-[22px] items-center justify-center rounded-full">
+                <span className="pointer-events-none flex h-[22px] w-[22px] items-center justify-center rounded-full bg-purple-100">
                   <Icon
-                    className="text-default-500 [&>path]:stroke-[1.5]"
+                    className="text-purple-700 [&>path]:stroke-[1.5]"
                     icon="solar:arrow-right-linear"
                     width={16}
                   />
@@ -64,27 +65,33 @@ export default function Component() {
           </div>
 
           <div className="mt-8 grid w-full grid-cols-1 gap-3 text-left sm:grid-cols-3">
-            <Feature icon="solar:shield-check-linear" title="Secure">
-              Enterprise-grade security out of the box.
+            <Feature
+              icon="solar:shield-check-linear"
+              title="Inscrições simples"
+            >
+              Encontre campeonatos abertos e entre com 1 clique.
             </Feature>
-            <Feature icon="solar:clock-circle-linear" title="Fast">
-              Optimized for speed and reliability.
+            <Feature icon="solar:clock-circle-linear" title="Agenda de jogos">
+              Receba data e local dos seus próximos jogos.
             </Feature>
-            <Feature icon="solar:stars-minimalistic-linear" title="Simple">
-              Clean UI with zero clutter.
+            <Feature
+              icon="solar:stars-minimalistic-linear"
+              title="Resultados e chaves"
+            >
+              Acompanhe placares e avanço automático das fases.
             </Feature>
           </div>
         </section>
 
         <div className="pointer-events-none absolute inset-0 top-[-25%] z-10 scale-150 select-none sm:scale-125">
           <FadeInImage
-            alt="Gradient background"
+            alt="Background com gradiente"
             src="https://nextuipro.nyc3.cdn.digitaloceanspaces.com/components-images/backgrounds/bg-gradient.png"
           />
         </div>
       </main>
 
-      <footer className="z-20 mx-auto flex w-full max-w-5xl items-center justify-center gap-6 border-t border-default-100 px-6 py-6 text-sm text-default-500 sm:justify-between">
+      <footer className="z-20 mx-auto flex w-full max-w-5xl items-center justify-center gap-6 border-t border-purple-200 px-6 py-6 text-sm text-purple-700 sm:justify-between">
         <p className="hidden sm:block">
           © {new Date().getFullYear()} Passa a Bola
         </p>
@@ -120,12 +127,12 @@ type FeatureProps = {
 
 function Feature({ icon, title, children }: FeatureProps) {
   return (
-    <div className="rounded-large border border-default-100 bg-content1/50 p-4 backdrop-blur supports-[backdrop-filter]:bg-content1/60">
+    <div className="rounded-large border border-purple-200 bg-purple-50/60 p-4 backdrop-blur supports-[backdrop-filter]:bg-purple-50/70">
       <div className="mb-2 flex items-center gap-2">
-        <Icon className="text-default-500" icon={icon} width={18} />
-        <h3 className="text-sm font-semibold">{title}</h3>
+        <Icon className="text-purple-600" icon={icon} width={18} />
+        <h3 className="text-sm font-semibold text-purple-900">{title}</h3>
       </div>
-      <p className="text-[13px] leading-6 text-default-500">{children}</p>
+      <p className="text-[13px] leading-6 text-purple-700">{children}</p>
     </div>
   );
 }

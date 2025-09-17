@@ -32,8 +32,8 @@ const BasicNavbar = forwardRef<HTMLElement, NavbarProps>(
         ref={ref}
         {...props}
         classNames={{
-          base: cn("border-default-100 bg-transparent", {
-            "bg-default-200/50 dark:bg-default-100/50": isMenuOpen,
+          base: cn("border border-purple-300/40 bg-transparent", {
+            "bg-purple-600/90 dark:bg-purple-700/90": isMenuOpen,
           }),
           wrapper: "w-full justify-center",
           item: "hidden md:flex",
@@ -44,8 +44,8 @@ const BasicNavbar = forwardRef<HTMLElement, NavbarProps>(
         onMenuOpenChange={setIsMenuOpen}
       >
         <NavbarBrand>
-          <div className="bg-default-foreground text-background rounded-full" />
-          <span className="text-small text-default-foreground ml-2 font-medium">
+          <div className="rounded-full bg-purple-600 text-white" />
+          <span className="ml-2 text-small font-medium text-purple-800">
             Passa a Bola
           </span>
         </NavbarBrand>
@@ -53,7 +53,7 @@ const BasicNavbar = forwardRef<HTMLElement, NavbarProps>(
         <NavbarContent className="hidden md:flex" justify="end">
           <NavbarItem className="ml-2 flex! gap-2">
             <Button
-              className="text-default-500"
+              className="text-purple-700"
               radius="full"
               variant="light"
               onPress={openLogin}
@@ -61,8 +61,7 @@ const BasicNavbar = forwardRef<HTMLElement, NavbarProps>(
               Entrar
             </Button>
             <Button
-              className="bg-default-foreground text-background font-medium"
-              color="secondary"
+              className="bg-purple-600 text-white font-medium hover:bg-purple-700"
               endContent={<Icon icon="solar:alt-arrow-right-linear" />}
               radius="full"
               variant="flat"
@@ -73,10 +72,20 @@ const BasicNavbar = forwardRef<HTMLElement, NavbarProps>(
           </NavbarItem>
         </NavbarContent>
 
-        <NavbarMenuToggle className="text-default-400 md:hidden" />
+        <NavbarMenuToggle
+          className={cn(
+            "md:hidden",
+            isMenuOpen ? "text-white" : "text-purple-700",
+          )}
+        />
 
         <NavbarMenu
-          className="bg-default-200/50 shadow-medium dark:bg-default-100/50 top-[calc(var(--navbar-height)-1px)] max-h-fit pt-6 pb-6 backdrop-blur-md backdrop-saturate-150"
+          className={cn(
+            "top-[calc(var(--navbar-height)-1px)] max-h-fit pt-6 pb-6 backdrop-blur-md backdrop-saturate-150 shadow-medium",
+            isMenuOpen
+              ? "bg-purple-600/90 text-white"
+              : "bg-purple-50 text-purple-800",
+          )}
           motionProps={{
             initial: { opacity: 0, y: -20 },
             animate: { opacity: 1, y: 0 },
@@ -90,6 +99,7 @@ const BasicNavbar = forwardRef<HTMLElement, NavbarProps>(
           <NavbarMenuItem>
             <Button
               fullWidth
+              className="border border-purple-300 text-purple-800"
               variant="faded"
               onPress={() => {
                 setIsMenuOpen(false);
@@ -102,7 +112,7 @@ const BasicNavbar = forwardRef<HTMLElement, NavbarProps>(
           <NavbarMenuItem className="mb-4">
             <Button
               fullWidth
-              className="bg-foreground text-background"
+              className="bg-purple-600 text-white hover:bg-purple-700"
               onPress={() => {
                 setIsMenuOpen(false);
                 openSignup();
