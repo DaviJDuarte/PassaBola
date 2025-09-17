@@ -52,7 +52,7 @@ def login(payload: LoginIn, db: Session = Depends(get_db)):
         expires_delta=timedelta(minutes=ACCESS_TOKEN_EXPIRE_MINUTES),
     )
 
-    return TokenOut(access_token=token, token_type="bearer")
+    return TokenOut(access_token=token, token_type="bearer", role="user" if not user.admin else "admin")
 
 @router.get("/me", response_model=UserOut)
 def me(current_user: User = Depends(get_current_user)):

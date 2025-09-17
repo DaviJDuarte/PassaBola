@@ -1,6 +1,5 @@
-from sqlalchemy import Session
+from sqlalchemy.orm import Session
 from models.match import Match
-from models.user_match import UserMatch
 from schemas.match import CreateMatch
 
 def create_match(db:Session, data:CreateMatch):

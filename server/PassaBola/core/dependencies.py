@@ -6,12 +6,10 @@ from jose import JWTError
 from sqlalchemy.orm import Session
 
 from db.database import get_db
-# ... existing code ...
 from fastapi import Depends, HTTPException, status
 from models.user import User
 from core.security import decode_access_token
-# ... existing code ...
-from fastapi import Request  # import Request so FastAPI can inject it
+from fastapi import Request
 
 def get_current_user(request: Request, db: Session = Depends(get_db)) -> User:
     # Tenta extrair o token do header Authorization

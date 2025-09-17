@@ -8,7 +8,7 @@ from contextlib import asynccontextmanager
 
 @asynccontextmanager
 async def lifespan(app: FastAPI):
-    # Ensure models are imported before creating tables so SQLAlchemy can resolve relationships
+    # Garantir que as tabelas foram criadas antes de iniciar a aplicação
     from models import user as _user  # noqa: F401
     from models import championship as _championship  # noqa: F401
     from models import user_championship as _user_championship  # noqa: F401
@@ -17,7 +17,6 @@ async def lifespan(app: FastAPI):
 
     create_tables()
     yield
-    # Optional: add shutdown logic here (e.g., close engine/session)
 
 from routers import championship, match
 app = FastAPI(
@@ -27,6 +26,11 @@ app = FastAPI(
     redoc_url="/redoc",
     lifespan=lifespan,
 )
+
+@app.get("/health")
+def health():
+    from datetime import datetime, timezone
+    return {"status": "ok", "time": datetime.now(timezone.utc).isoformat()}
 
 app.add_middleware(
     CORSMiddleware,
@@ -38,7 +42,7 @@ app.add_middleware(
 app.include_router(championship.router)
 app.include_router(match.router)
 
-app.add_middleware(AuthMiddleware, protected_prefixes=["/api/secure"])
+app.add_middleware(AuthMiddleware, protected_prefixes=["/"], exclude_prefixes=["/auth"])
 
 app.include_router(auth_router)
 

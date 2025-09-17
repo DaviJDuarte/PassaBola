@@ -14,3 +14,19 @@ class ChampionshipOut(BaseModel):
 
     class Config:
         from_attributes = True
+
+class ChampionshipWithCount(BaseModel):
+    id: int
+    name: str
+    number_players: int
+    is_closed: bool
+    participants_count: int
+
+    class Config:
+        from_attributes = True
+
+class ChampionshipListResponse(BaseModel):
+    items: list[ChampionshipWithCount]
+    page: int
+    page_size: int
+    total: int
