@@ -8,9 +8,16 @@ import api from "@/config/api.ts";
 
 type Championship = {
   id: string;
-  players_per_team: number;
-  status: "open" | "closed" | "ongoing" | "completed";
+  number_players: number;
+  is_closed: boolean;
   name?: string;
+};
+
+type ChampionshipListResponse = {
+  items: Championship[];
+  page: number;
+  page_size: number; // note snake_case if your backend uses it
+  total: number;
 };
 
 export default function ChampionshipsListPage() {
@@ -22,11 +29,13 @@ export default function ChampionshipsListPage() {
   const load = async () => {
     setLoading(true);
     try {
-      const { data } = await api.get<Championship[]>("/championships", {
+      const res = await api.get<ChampionshipListResponse>("/championships", {
         params: { status: "open" },
       });
 
-      setList(data ?? []);
+      const { items } = res.data;
+
+      setList(items ?? []);
     } catch (e) {
       console.error(e);
     } finally {
@@ -100,24 +109,24 @@ export default function ChampionshipsListPage() {
                     {c.name ?? `Championship #${c.id}`}
                   </h3>
                   <p className="mt-1 text-sm text-default-500">
-                    {c.players_per_team} jogadores por time
+                    {c.number_players} jogadores por time
                   </p>
                 </div>
                 <span
                   className={clsx(
                     "rounded-full px-2 py-0.5 text-xs",
-                    c.status === "open" && "bg-success-100 text-success-700",
-                    c.status !== "open" && "bg-default-100 text-default-600",
+                    c.is_closed && "bg-success-100 text-success-700",
+                    !c.is_closed && "bg-default-100 text-default-600",
                   )}
                 >
-                  {c.status}
+                  {c.is_closed ? "Fechado" : "Aberto"}
                 </span>
               </div>
 
               <Button
                 className="mt-4 w-full"
                 color="primary"
-                isDisabled={c.status !== "open"}
+                isDisabled={c.is_closed}
                 isLoading={joiningId === c.id}
                 radius="full"
                 startContent={

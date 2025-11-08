@@ -21,6 +21,7 @@ api.interceptors.response.use(
   (error) => {
     if (error?.response?.status === 401) {
       localStorage.removeItem("access_token");
+      localStorage.removeItem("admin");
       // TODO - Melhorar redirecionamento. Mostrar mensagem de erro na autenticação e abrir modal de login.
       if (window.location.pathname !== "/") {
         window.location.replace("/");

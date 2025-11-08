@@ -1,9 +1,10 @@
-// src/pages/admin/AdminGameEditorPage.tsx
 import { useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
 import { Input } from "@heroui/input";
+import { DateInput } from "@heroui/date-input";
 import { Button } from "@heroui/button";
 import { Icon } from "@iconify/react";
+import { parseDateTime, CalendarDateTime } from "@internationalized/date"; // <-- needed
 
 import api from "@/config/api.ts";
 
@@ -22,10 +23,13 @@ type Game = {
 export default function AdminGameEditorPage() {
   const { id } = useParams<{ id: string }>();
   const [game, setGame] = useState<Game | null>(null);
-  const [date, setDate] = useState("");
+
+  // fix: DateInput expects CalendarDateTime (not string)
+  const [date, setDate] = useState<CalendarDateTime | null>(null);
   const [location, setLocation] = useState("");
   const [homeScore, setHomeScore] = useState<string>("");
   const [awayScore, setAwayScore] = useState<string>("");
+
   const [loading, setLoading] = useState(true);
   const [savingSchedule, setSavingSchedule] = useState(false);
   const [savingScore, setSavingScore] = useState(false);
@@ -37,7 +41,14 @@ export default function AdminGameEditorPage() {
       const { data } = await api.get<Game>(`/games/${id}`);
 
       setGame(data);
-      setDate(data.date ?? "");
+
+      // Convert API string date → CalendarDateTime
+      if (data.date) {
+        setDate(parseDateTime(data.date));
+      } else {
+        setDate(null);
+      }
+
       setLocation(data.location ?? "");
       setHomeScore(data.home_score?.toString() ?? "");
       setAwayScore(data.away_score?.toString() ?? "");
@@ -57,7 +68,7 @@ export default function AdminGameEditorPage() {
     setSavingSchedule(true);
     try {
       const { data } = await api.patch<Game>(`/games/${id}/schedule`, {
-        date,
+        date: date ? date.toString() : null, // send ISO-like string
         location,
       });
 
@@ -122,13 +133,14 @@ export default function AdminGameEditorPage() {
       <section className="rounded-large border border-default-100 bg-content1/60 p-6">
         <h2 className="text-lg font-medium">Agendamento</h2>
         <div className="mt-4 grid grid-cols-1 gap-4 sm:grid-cols-2">
-          <Input
+          <DateInput
+            granularity="minute"
             label="Data"
             radius="lg"
-            type="datetime-local"
             value={date}
-            onChange={(e) => setDate(e.target.value)}
+            onChange={setDate}
           />
+
           <Input
             label="Local"
             radius="lg"

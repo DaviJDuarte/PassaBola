@@ -4,16 +4,26 @@ import { Input } from "@heroui/input";
 import { Icon } from "@iconify/react";
 import { useNavigate } from "react-router-dom";
 
+import api from "@/config/api.ts";
+
 type Championship = {
   id: string;
-  players_per_team: number;
+  number_players: number;
   status: "open" | "closed" | "ongoing" | "completed";
   name?: string;
 };
 
+type ChampionshipListResponse = {
+  items: Championship[];
+  page: number;
+  page_size: number;
+  total: number;
+};
+
 export default function AdminChampionshipsPage() {
   const [list, setList] = useState<Championship[]>([]);
-  const [ppt, setPpt] = useState<number | "">(2);
+  const [ppt, setPpt] = useState<number | "">(6);
+  const [name, setName] = useState<string>("");
   const [loading, setLoading] = useState(true);
   const [creating, setCreating] = useState(false);
   const nav = useNavigate();
@@ -21,10 +31,10 @@ export default function AdminChampionshipsPage() {
   const load = async () => {
     setLoading(true);
     try {
-      const res = await fetch(`/championships`);
-      const data = await res.json();
+      const { data } =
+        await api.get<ChampionshipListResponse>(`/championships`);
 
-      setList(data ?? []);
+      setList(data.items ?? []);
     } catch (e) {
       console.error(e);
     } finally {
@@ -38,14 +48,16 @@ export default function AdminChampionshipsPage() {
 
   const create = async () => {
     if (ppt === "" || Number(ppt) < 1) return;
+    if (!name.trim()) return;
     setCreating(true);
     try {
-      await fetch(`/championships`, {
-        method: "POST",
-        body: JSON.stringify({ players_per_team: Number(ppt) }),
+      await api.post(`/championships`, {
+        number_players: Number(ppt),
+        name: name.trim(),
       });
       await load();
       setPpt(2);
+      setName("");
     } catch (e) {
       console.error(e);
     } finally {
@@ -64,6 +76,13 @@ export default function AdminChampionshipsPage() {
         </div>
 
         <div className="flex items-center gap-3">
+          <Input
+            className="w-64"
+            label="Nome do campeonato"
+            radius="lg"
+            value={name}
+            onValueChange={setName}
+          />
           <Input
             className="w-48"
             label="Jogadores por time"
@@ -101,7 +120,7 @@ export default function AdminChampionshipsPage() {
                   {c.name ?? `Championship #${c.id}`}
                 </div>
                 <div className="mt-1 text-sm text-default-500">
-                  {c.players_per_team} por time • {c.status}
+                  {c.number_players} por time • {c.status}
                 </div>
               </div>
               <Button

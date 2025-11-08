@@ -14,6 +14,13 @@ type Game = {
   status: "scheduled" | "completed" | "pending";
 };
 
+type UpcomingGamesResponse = {
+  items: Game[];
+  page: number;
+  page_size: number;
+  total: number;
+};
+
 export default function MyUpcomingGamesPage() {
   const [games, setGames] = useState<Game[]>([]);
   const [loading, setLoading] = useState(true);
@@ -22,11 +29,11 @@ export default function MyUpcomingGamesPage() {
     (async () => {
       setLoading(true);
       try {
-        const { data } = await api.get<Game[]>("/me/games", {
+        const { data } = await api.get<UpcomingGamesResponse>("/me/games", {
           params: { status: "upcoming" },
         });
 
-        setGames(data ?? []);
+        setGames(data.items ?? []);
       } catch (e) {
         console.error(e);
       } finally {
@@ -89,7 +96,7 @@ export default function MyUpcomingGamesPage() {
           radius="full"
           startContent={<Icon icon="solar:clock-circle-linear" width={18} />}
           variant="bordered"
-          onPress={() => (window.location.href = "/me/games/completed")}
+          onPress={() => (window.location.href = "/app/me/games/completed")}
         >
           Ver jogos concluídos
         </Button>

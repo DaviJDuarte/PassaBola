@@ -79,15 +79,9 @@ export default function LoginModal({
       }
 
       localStorage.setItem("access_token", data.access_token);
-      localStorage.setItem("admin", data.role);
+      localStorage.setItem("role", data.role);
 
-      if (data.role === "admin") {
-        navigate("/admin", { replace: true });
-      }
-
-      if (data.role === "user") {
-        navigate("/app", { replace: true });
-      }
+      navigate("/app", { replace: true });
     } catch (err: any) {
       const message =
         err?.response?.data?.message ||

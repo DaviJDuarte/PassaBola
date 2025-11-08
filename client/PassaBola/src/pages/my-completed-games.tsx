@@ -15,6 +15,13 @@ type Game = {
   status: "scheduled" | "completed" | "pending";
 };
 
+type CompletedGamesResponse = {
+  items: Game[];
+  page: number;
+  page_size: number;
+  total: number;
+};
+
 export default function MyCompletedGamesPage() {
   const [games, setGames] = useState<Game[]>([]);
   const [loading, setLoading] = useState(true);
@@ -23,11 +30,11 @@ export default function MyCompletedGamesPage() {
     (async () => {
       setLoading(true);
       try {
-        const { data } = await api.get<Game[]>("/me/games", {
+        const { data } = await api.get<CompletedGamesResponse>("/me/games", {
           params: { status: "completed" },
         });
 
-        setGames(data ?? []);
+        setGames(data.items ?? []);
       } catch (e) {
         console.error(e);
       } finally {

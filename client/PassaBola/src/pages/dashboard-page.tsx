@@ -3,12 +3,15 @@ import { useNavigate } from "react-router-dom";
 import { Button } from "@heroui/button";
 import { Icon } from "@iconify/react";
 
+import DashboardStatsGraph from "@/components/dashboard-stats-graph";
+
 const DashboardPage: React.FC = () => {
   const navigate = useNavigate();
   const role = (localStorage.getItem("role") || "").toLowerCase();
 
   function handleSignOut() {
     localStorage.removeItem("access_token");
+    localStorage.removeItem("role");
     navigate("/login", { replace: true });
   }
 
@@ -108,7 +111,7 @@ const DashboardPage: React.FC = () => {
               Ver concluídos
             </Button>
           </div>
-
+          <DashboardStatsGraph />
           {/* Visível só pra admin */}
           {role === "admin" && (
             <div className="rounded-large border border-default-100 bg-content1/60 p-5 backdrop-blur supports-[backdrop-filter]:bg-content1/70 lg:col-span-3">
