@@ -17,7 +17,7 @@ class Match(Base):
     id = Column(Integer, primary_key=True, index=True)
     championship_id = Column(Integer, ForeignKey('championships.id'), nullable=False)
 
-    scheduled_at = Column(DateTime, nullable=False)
+    scheduled_at = Column(DateTime, nullable=True)
     location = Column(String)
     status = Column(Enum(MatchStatus), default=MatchStatus.scheduled, nullable=False)
 

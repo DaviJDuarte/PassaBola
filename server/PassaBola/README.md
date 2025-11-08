@@ -157,7 +157,28 @@ curl -X PATCH http://localhost:8000/games/10/schedule \
   -H "Content-Type: application/json" \
   -d '{"date":"2025-09-20T15:00:00Z","location":"Estádio A"}'
 ```
-## Seed (popular banco de dados)
+
+## Exportação de Dados
+
+A API oferece funcionalidade de exportação de dados em formato CSV.
+
+### Export (protegido)
+- GET /export/match/{match_id}/players/csv
+  - Exporta informações de todos os jogadores de uma partida específica
+  - Retorna arquivo CSV para download
+  - Campos incluídos: Nome, Email, Telefone, Documento, Posição, Data de Nascimento, Time, Status (Confirmado/Pendente)
+  - Requer autenticação via Bearer token
+  - Retorna 404 se a partida não for encontrada
+  - Nome do arquivo: `match_{match_id}_players.csv`
+
+### Exemplo de uso
+
+Exportar jogadores de uma partida:
+```bash
+curl -H "Authorization: Bearer <TOKEN>" \
+  http://localhost:8000/export/match/1/players/csv \
+  --output match_1_players.csv
+
 ## Padrões e Convenções
 
 - Respostas JSON.

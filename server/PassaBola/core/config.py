@@ -6,17 +6,12 @@ class Settings(BaseSettings):
     DATABASE_URL: str
     API_PREFIX: str = "/api"
     DEBUG: bool = True
-    ALLOWED_ORIGINS: str = ""
-
-    @field_validator("ALLOWED_ORIGINS")
-    def allowed_origins_validator(cls, value: str) -> List[str]:
-        return value.split(",") if value else []
+    ALLOWED_ORIGINS: List[str] = []
 
     model_config = SettingsConfigDict(
         env_file=".env",
         env_file_encoding="utf-8-sig",
         case_sensitive=True,
     )
-
 
 settings = Settings()

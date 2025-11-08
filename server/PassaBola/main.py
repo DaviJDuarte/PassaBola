@@ -32,6 +32,14 @@ def health():
     from datetime import datetime, timezone
     return {"status": "ok", "time": datetime.now(timezone.utc).isoformat()}
 
+
+app.include_router(championship.router)
+app.include_router(match.router)
+
+app.add_middleware(AuthMiddleware, protected_prefixes=["/"], exclude_prefixes=["/auth"])
+
+app.include_router(auth_router)
+
 app.add_middleware(
     CORSMiddleware,
     allow_origins=settings.ALLOWED_ORIGINS,
@@ -39,12 +47,6 @@ app.add_middleware(
     allow_methods=["*"],
     allow_headers=["*"],
 )
-app.include_router(championship.router)
-app.include_router(match.router)
-
-app.add_middleware(AuthMiddleware, protected_prefixes=["/"], exclude_prefixes=["/auth"])
-
-app.include_router(auth_router)
 
 if __name__ == "__main__":
     import uvicorn
